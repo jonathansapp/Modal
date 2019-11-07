@@ -16,6 +16,7 @@
 
         <button @onclick="SubmitForm" class="btn btn-primary">Submit</button>
         <button @onclick="Cancel" class="btn btn-secondary">Cancel</button>
+        <button @onclick="@(() => OnTesting.InvokeAsync(true))" class="btn btn-secondary">Testing</button>
     </div>
 }
 else
@@ -31,13 +32,22 @@ else
     [CascadingParameter] ModalParameters Parameters { get; set; }
 
     bool ShowForm { get; set; } = true;
-    string FirstName { get; set; }
-    string LastName { get; set; }
-    int FormId { get; set; }
+
+    [Parameter]
+    public string FirstName { get; set; }
+
+    [Parameter]
+    public string LastName { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> OnTesting { get; set; }
+
+    [Parameter]
+    public int FormId { get; set; }
 
     protected override void OnInitialized()
     {
-        FormId = Parameters.Get<int>("FormId");
+        //FormId = Parameters.Get<int>("FormId");
     }
 
     void SubmitForm()

@@ -15,8 +15,23 @@ namespace Blazored.Modal.Services
             Cancelled = cancelled;
         }
 
-        public static ModalResult Ok<T>(T result) => new ModalResult(result, typeof(T), false);
+        public static ModalResult<TResult> Ok<TResult>(TResult result) => new ModalResult<TResult>(result, false);
 
-        public static ModalResult Cancel() => new ModalResult(default, typeof(object), true);
+        public static ModalResult<object> Cancel() => new ModalResult<object>(default, true);
+    }
+
+    public class ModalResult<TResult> : ModalResult
+    {
+        private readonly TResult data;
+
+        public new TResult Data
+        {
+            get => data;
+        }
+
+        protected internal ModalResult(TResult data, bool cancelled) : base(data, typeof(TResult), cancelled)
+        {
+            this.data = data;
+        }
     }
 }

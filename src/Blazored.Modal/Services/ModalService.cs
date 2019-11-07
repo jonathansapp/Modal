@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.RenderTree;
 using System;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Blazored.Modal.Services
 {
@@ -88,10 +91,25 @@ namespace Blazored.Modal.Services
         /// <inheritdoc cref="IModalService.Show{T}(string, ModalParameters, ModalOptions)"/>
         public void Show<T>(string title, ModalParameters parameters = null, ModalOptions options = null) where T : ComponentBase
         {
-            Show(title, 
+            Show(title,
                  typeof(T),
                  parameters ?? new ModalParameters(),
                  options ?? new ModalOptions());
+        }
+
+        internal void TriggerShow(string title, RenderFragment content, ModalParameters parameters, ModalOptions options)
+        {
+            OnShow?.Invoke(title, content, parameters, options);
+        }
+
+        public IModalDialogInteraction<TComponent> Create<TComponent>(string title) where TComponent : ComponentBase
+        {
+            return new ModalDialogInteraction<TComponent>(this, title);
+        }
+
+        public IModalDialogInteraction<TComponent, TResult> Create<TComponent, TResult>(string title) where TComponent : ComponentBase
+        {
+            return new ModalDialogInteraction<TComponent, TResult>(this, title);
         }
     }
 }
