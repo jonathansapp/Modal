@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Linq.Expressions;
+using Blazored.Modal;
+using Blazored.Modal.Services;
 using Microsoft.AspNetCore.Components;
 
 namespace Blazored.Modal.Services
 {
-    public class ModalDialogInteraction<TComponent> : ModalDialogInteraction<TComponent, Object>, IModalDialogInteraction<TComponent>
-        where TComponent : ComponentBase
-    {
-        public ModalDialogInteraction(ModalService modalService, string title) : base(modalService, title)
-        {
-        }
-    }
-
-    public class ModalDialogInteraction<TComponent, TResult> : IModalDialogInteraction<TComponent, TResult>
+    public class ModalDialogInteraction<TComponent> : IModalDialogInteraction<TComponent>
         where TComponent : ComponentBase
     {
         private readonly ModalService modalService;
@@ -25,9 +19,9 @@ namespace Blazored.Modal.Services
             this.title = title;
         }
 
-        public event Action<ModalResult<TResult>> OnClose;
+        public event Action<ModalResult> OnClose;
 
-        public IModalDialogInteraction<TComponent, TResult> Show()
+        public IModalDialogInteraction<TComponent> Show()
         {
             var content = new RenderFragment(renderTreeBuilder =>
             {
@@ -40,26 +34,28 @@ namespace Blazored.Modal.Services
             return this;
         }
 
-        public void Close(ModalResult<TResult> modalResult)
+        public void Close(ModalResult modalResult)
         {
             modalService.Close(modalResult);
             OnClose?.Invoke(modalResult);
         }
 
-        public IModalDialogInteraction<TComponent, TResult> AddParameter<TProperty>(Expression<Func<TComponent, TProperty>> expr, TProperty value)
+        public IModalDialogInteraction<TComponent> AddParameter<TProperty>(Expression<Func<TComponent, TProperty>> expr, TProperty value)
         {
             componentParameterSupport.AddParameter(expr, value);
             return this;
         }
 
-        public IModalDialogInteraction<TComponent, TResult> AddEventCallback<TCallbackType>(Expression<Func<TComponent, EventCallback<TCallbackType>>> expr,
-                                                                                            EventCallback<TCallbackType> callback)
+        public IModalDialogInteraction<TComponent> AddEventCallback<TCallbackType>(Expression<Func<TComponent, EventCallback<TCallbackType>>> expr,
+                                                                                   EventCallback<TCallbackType> callback)
         {
             componentParameterSupport.AddEventCallback(expr, callback);
             return this;
         }
 
-        public IModalDialogInteraction<TComponent, TResult> AddEventCallback<TCallbackType>(Expression<Func<TComponent, EventCallback<TCallbackType>>> expr, IComponent component, Action<TCallbackType> action)
+        public IModalDialogInteraction<TComponent> AddEventCallback<TCallbackType>(Expression<Func<TComponent, EventCallback<TCallbackType>>> expr,
+                                                                                   IComponent component,
+                                                                                   Action<TCallbackType> action)
         {
             return AddEventCallback<TCallbackType>(expr, EventCallback.Factory.Create<TCallbackType>(component, action));
         }

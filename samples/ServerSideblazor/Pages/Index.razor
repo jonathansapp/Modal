@@ -14,6 +14,8 @@
 
 @code {
 
+    public string Testing { get; set; }
+
     void ShowModal()
     {
         var modal = Modal.Create<SignUpForm>("Sign Up Form")
@@ -26,7 +28,7 @@
         //modal.AddEventCallback(a => a.OnTesting,
         //        EventCallback.Factory.Create<bool>(this, result => modal.Close(ModalResult.Cancel())));
 
-        modal.OnClose += ModalClosed;
+        //modal.OnClose += ModalClosed;
         modal.Show();
 
         //var parameters = new ModalParameters();

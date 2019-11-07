@@ -106,10 +106,5 @@ namespace Blazored.Modal.Services
         {
             return new ModalDialogInteraction<TComponent>(this, title);
         }
-
-        public IModalDialogInteraction<TComponent, TResult> Create<TComponent, TResult>(string title) where TComponent : ComponentBase
-        {
-            return new ModalDialogInteraction<TComponent, TResult>(this, title);
-        }
     }
 }
