@@ -1,0 +1,44 @@
+﻿@page "/newmethod"
+@inject IModalService Modal
+
+<h1>Blazored Modal Sample (New Call Style)</h1>
+
+<hr class="mb-5" />
+
+<p>
+    This example shows Blazored.Modal's default behavior, including opening a modal with
+    parameters and returning a result, with the alternative Modal call style.
+</p>
+
+<button @onclick="ShowModal" class="btn btn-primary">Show Modal</button>
+
+@if (Name != null)
+{
+    <p>You entered: <strong>@Name</strong></p>
+}
+
+@code {
+
+    string Name { get; set; }
+
+    void ShowModal()
+    {
+        var modal = Modal.Create<NewMethodChildComponent>("Sign Up Form")
+            .AddParameter(a => a.FirstName, "First")
+            .AddParameter(a => a.LastName, "Last");
+
+        modal.AddEventCallback(a => a.OnSubmit, this, name =>
+        {
+            Name = name;
+            modal.Close(ModalResult.Cancel());
+        }).AddEventCallback(a => a.OnCancel, this, () =>
+        {
+            Name = null;
+            modal.Close(ModalResult.Cancel());
+        });
+
+
+        modal.Show();
+    }
+}
+

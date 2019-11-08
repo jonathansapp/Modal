@@ -64,6 +64,6 @@ namespace Blazored.Modal.Services
         /// </summary>
         /// <param name="modalResult"></param>
         void Close(ModalResult modalResult);
-        IModalDialogInteraction<TComponent> Create<TComponent>(string title) where TComponent : ComponentBase;
+        IModalDialogInteraction<TComponent> Create<TComponent>(string title) where TComponent : IComponent;
     }
 }

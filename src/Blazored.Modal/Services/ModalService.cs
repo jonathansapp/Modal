@@ -68,7 +68,7 @@ namespace Blazored.Modal.Services
 
             var content = new RenderFragment(x => { x.OpenComponent(1, componentType); x.CloseComponent(); });
 
-            OnShow?.Invoke(title, content, parameters, options);
+            TriggerShowEvent(title, content, parameters, options);
         }
 
         /// <summary>
@@ -97,14 +97,25 @@ namespace Blazored.Modal.Services
                  options ?? new ModalOptions());
         }
 
-        internal void TriggerShow(string title, RenderFragment content, ModalParameters parameters, ModalOptions options)
+        internal void TriggerShowEvent(string title, RenderFragment content, ModalParameters parameters, ModalOptions options)
         {
             OnShow?.Invoke(title, content, parameters, options);
         }
 
-        public IModalDialogInteraction<TComponent> Create<TComponent>(string title) where TComponent : ComponentBase
+        /// <summary>
+        /// Creates a new modal dialog interaction
+        /// </summary>
+        /// <typeparam name="TComponent"></typeparam>
+        /// <param name="title"></param>
+        /// <returns></returns>
+        public IModalDialogInteraction<TComponent> Create<TComponent>(string title) where TComponent : IComponent
         {
-            return new ModalDialogInteraction<TComponent>(this, title);
+            return Create<TComponent>(title, new ModalOptions());
+        }
+
+        public IModalDialogInteraction<TComponent> Create<TComponent>(string title, ModalOptions options) where TComponent : IComponent
+        {
+            return new ModalDialogInteraction<TComponent>(this, title, options);
         }
     }
 }

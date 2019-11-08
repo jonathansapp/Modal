@@ -14,28 +14,13 @@
 
 @code {
 
-    public string Testing { get; set; }
-
     void ShowModal()
     {
-        var modal = Modal.Create<SignUpForm>("Sign Up Form")
-            .AddParameter(a => a.FormId, 11)
-            .AddParameter(a => a.FirstName, "Jonathan")
-            .AddParameter(a => a.LastName, "Sapp");
+        var parameters = new ModalParameters();
+        parameters.Add("FormId", 11);
 
-        modal.AddEventCallback(a => a.OnTesting, this, result => modal.Close(ModalResult.Cancel()));
-
-        //modal.AddEventCallback(a => a.OnTesting,
-        //        EventCallback.Factory.Create<bool>(this, result => modal.Close(ModalResult.Cancel())));
-
-        //modal.OnClose += ModalClosed;
-        modal.Show();
-
-        //var parameters = new ModalParameters();
-        //parameters.Add("FormId", 11);
-
-        //Modal.OnClose += ModalClosed;
-        //Modal.Show<SignUpForm>("Sign Up Form", parameters);
+        Modal.OnClose += ModalClosed;
+        Modal.Show<SignUpForm>("Sign Up Form", parameters);
     }
 
     void ModalClosed(ModalResult modalResult)
@@ -51,13 +36,7 @@
             Console.WriteLine(modalResult.Data.ToString());
         }
 
-        //Modal.OnClose -= ModalClosed;
-    }
-
-    public class Person
-    {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        Modal.OnClose -= ModalClosed;
     }
 
 }
