@@ -28,9 +28,8 @@ namespace Blazored.Modal
 
         protected override void OnInitialized()
         {
-            var modalService = (ModalService)ModalService;
-            modalService.OnShow += ShowModal;
-            modalService.OnClose += CloseModal;
+            ((ModalService)ModalService).OnShow += ShowModal;
+            ModalService.OnClose += CloseModal;
         }
 
         public void ShowModal(string title, RenderFragment content, ModalParameters parameters, ModalOptions options)
@@ -64,9 +63,8 @@ namespace Blazored.Modal
 
         public void Dispose()
         {
-            var modalService = (ModalService)ModalService;
-            modalService.OnShow -= ShowModal;
-            modalService.OnClose -= CloseModal;
+            ((ModalService)ModalService).OnShow -= ShowModal;
+            ModalService.OnClose -= CloseModal;
         }
 
         private void SetModalOptions(ModalOptions options)
